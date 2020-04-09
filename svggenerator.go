@@ -1,9 +1,14 @@
 package main
 
-const (
-	XML_HEADING   string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">"
-	SVG_OPEN_TAG         = "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:space=\"preserve\" width=\"%d\" height=\"%d\">"
-	SVG_CLOSE_TAG        = "</svg>"
-	SVG_PATH_LINE        = "<path d=\"%s\" stroke=\"%s\" stroke-width=\"%d\" fill=\"none\"/>"
-	SVG_FILL_PATH        = "<path d=\"%s\" stroke=\"none\" fill=\"%s\"/>"
-)
+import "text/template"
+
+const blank = `<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><path fill="none" stroke="#999" stroke-width="2" d="M1,1V199H199V1z"/></svg>`
+
+var tmpl = `{{ define "Sparkline" }}<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ .Opts.ImgWidth }}" height="{{ .Opts.ImgHeight }}">
+	<path d="{{ .Line }}" stroke="{{ .Opts.LineColor }}" stroke-width="{{ .Opts.LineWidth }}" fill="none"/>
+	{{ if .Opts.IsFilled }}<path d="{{ .Line }} {{ .Closure }}" fill="{{ .Opts.FillColor }}"/>{{ end }}
+</svg>
+{{ end }}`
+
+var svgTpl = template.Must(template.New("").Parse(tmpl))
