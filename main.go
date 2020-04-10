@@ -37,7 +37,7 @@ type sparklineChart struct {
 	LineWidth int       `schema:"lw" validate:"gt=0"`
 	IsFilled  bool      `schema:"f"`
 	FillColor string    `schema:"fc" validate:"required_with=IsFilled,omitempty,hexcolor|rgb|rgba"`
-	Dots      []float32 `schema:"d" validate:"min=2,max=1000"`
+	Dots      []float32 `schema:"d" validate:"min=1,max=1000"`
 }
 
 type svgImage struct {
