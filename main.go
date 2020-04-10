@@ -33,10 +33,10 @@ type sparklineChart struct {
 	ImgWidth  int       `schema:"w" validate:"gt=4"`
 	ImgHeight int       `schema:"h" validate:"gt=4"`
 	OffSet    int       `schema:"m" validate:"gte=0,ltfield=ImgWidth"`
-	LineColor string    `schema:"lc" validate:"omitempty,rgb|rgba"`
+	LineColor string    `schema:"lc" validate:"required,hexcolor|rgb|rgba"`
 	LineWidth int       `schema:"lw" validate:"gt=0"`
 	IsFilled  bool      `schema:"f"`
-	FillColor string    `schema:"fc" validate:"omitempty,hexcolor|rgb|rgba"`
+	FillColor string    `schema:"fc" validate:"required_with=IsFilled,omitempty,hexcolor|rgb|rgba"`
 	Dots      []float32 `schema:"d" validate:"min=2,max=1000"`
 }
 
