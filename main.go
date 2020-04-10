@@ -51,13 +51,18 @@ func (c *sparklineChart) Draw(w io.Writer) error {
 	closure := fmt.Sprint(" V", c.ImgHeight, " L", c.OffSet, " ", c.ImgHeight, " Z")
 
 	min, max := MinMax(c.Dots)
-	/*
-		if min == max {
-			//ToDo: deal with one dot
-			midY := float32(c.ImgHeight+c.OffSet) / 2
-			result = fmt.Sprintf("M %d %f L %d %f", c.OffSet, midY, c.ImgWidth-c.OffSet, midY)
-			return result, closure, nil
-		}*/
+	if min == max {
+		midY := float32(c.ImgHeight+c.OffSet) / 2
+		result = fmt.Sprintf("M %d %f L %d %f", c.OffSet, midY, c.ImgWidth-c.OffSet, midY)
+
+		svgTpl.ExecuteTemplate(w, "Sparkline", &svgImage{
+			Line:    result,
+			Closure: closure,
+			Opts:    c,
+		})
+
+		return nil
+	}
 
 	step := float32(c.ImgWidth-2*c.OffSet) / float32(len(c.Dots)-1)
 	scaleY := float32(c.ImgHeight-2*c.OffSet) / (max - min)
